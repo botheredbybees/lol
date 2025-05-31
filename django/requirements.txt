@@ -1,0 +1,12 @@
+django>=4.2,<5.0                # Latest stable Django version
+djangorestframework>=3.14.0     # API framework for Django
+django-allauth>=0.56.0          # User registration & authentication
+gunicorn>=21.2.0                # Production-ready WSGI server for Django
+mysqlclient>=2.2.0              # MySQL adapter for Django
+python-dotenv>=1.0.0            # Manage environment variables (.env)
+whitenoise>=6.6.0               # Serve static files efficiently in production
+psycopg2-binary>=2.9.9          # Optional: if using PostgreSQL instead of MySQL
+
+# Optional tools for development and debugging:
+django-debug-toolbar>=4.2.0      # Debugging for Django
+drf-spectacular>=0.26.4         # OpenAPI schema generation for DRF

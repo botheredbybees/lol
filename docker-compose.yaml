@@ -1,0 +1,71 @@
+version: "3.9"
+
+services:
+  db:
+    image: mariadb:10.11
+    restart: always
+    environment:
+      MARIADB_DATABASE: ${MYSQL_DATABASE}
+      MARIADB_USER: ${MYSQL_USER}
+      MARIADB_PASSWORD: ${MYSQL_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d  # For importing existing data
+    ports:
+      - "3307:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8088:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      - db
+
+  django:
+    build:
+      context: ./django
+      dockerfile: Dockerfile
+    restart: always
+    env_file: .env
+    volumes:
+      - ./django:/app
+      - media_files:/app/media          # For generated images
+      - static_files:/app/staticfiles   # For collected static files
+    ports:
+      - "8008:8000"
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - media_files:/app/media          # Serve media files
+      - static_files:/app/staticfiles   # Serve static files
+    depends_on:
+      - django
+
+  # Optional: Stable Diffusion API server
+  # sd-api:
+  #   image: your-stable-diffusion-image
+  #   restart: always
+  #   ports:
+  #     - "7860:7860"
+  #   volumes:
+  #     - ./sd-models:/app/models
+  #   environment:
+  #     - MODEL_PATH=/app/models/ghibli-diffusion-v1.ckpt
+
+volumes:
+  db_data:
+  media_files:
+  static_files:
