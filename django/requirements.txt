@@ -1,12 +1,37 @@
-django>=4.2,<5.0                # Latest stable Django version
-djangorestframework>=3.14.0     # API framework for Django
-django-allauth>=0.56.0          # User registration & authentication
-gunicorn>=21.2.0                # Production-ready WSGI server for Django
-mysqlclient>=2.2.0              # MySQL adapter for Django
-python-dotenv>=1.0.0            # Manage environment variables (.env)
-whitenoise>=6.6.0               # Serve static files efficiently in production
-psycopg2-binary>=2.9.9          # Optional: if using PostgreSQL instead of MySQL
+# Core Django
+Django>=4.2.0,<5.0
+djangorestframework>=3.14.0
+django-allauth>=0.57.0
 
-# Optional tools for development and debugging:
-django-debug-toolbar>=4.2.0      # Debugging for Django
-drf-spectacular>=0.26.4         # OpenAPI schema generation for DRF
+# Database
+mysqlclient>=2.2.0
+
+# Production server
+gunicorn>=21.2.0
+
+# CORS for API calls from Phaser.js frontend
+django-cors-headers>=4.3.0
+
+# Development and management utilities
+django-extensions>=3.2.0
+
+# API calls to external services (Stable Diffusion, LLM APIs)
+requests>=2.31.0
+
+# Image processing for generated content
+Pillow>=10.0.0
+
+# Auto-cleanup of old generated files
+django-cleanup>=8.0.0
+
+# Environment variables
+python-decouple>=3.8
+
+# Additional useful packages for gamification
+django-model-utils>=4.3.1      # For model utilities like TimeStampedModel
+# django-jsonfield>=3.1.0      # REMOVED: Django 4.2+ has built-in JSONField
+celery>=5.3.0                   # For background tasks (optional but recommended)
+redis>=5.0.0                    # For caching and celery broker
+
+# Development dependencies
+django-debug-toolbar>=4.2.0    # For debugging (only in development)
